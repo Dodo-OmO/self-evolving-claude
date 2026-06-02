@@ -1,0 +1,7 @@
+# 默认文本文件用 LF（跨平台一致）
+* text=auto eol=lf
+
+# Windows 脚本用 CRLF（兼容 Windows PowerShell 5.1 + 惯例）
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf

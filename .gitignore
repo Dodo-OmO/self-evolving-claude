@@ -1,0 +1,19 @@
+# 运行时状态文件（hook 自动生成，按 session 隔离，不入仓）
+.claude/review-needed-*.txt
+.claude/.review-marker-last-*.txt
+.claude/.task-md-warned-*.flag
+.claude/.task-md-counter-*.txt
+.claude/release-marker*
+.claude/tsc-baseline.txt
+
+# 依赖 / 构建产物
+node_modules/
+dist/
+out/
+*.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

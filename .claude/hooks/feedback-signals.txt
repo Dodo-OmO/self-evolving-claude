@@ -1,0 +1,24 @@
+# feedback-signals.txt
+# 修正信号词表 —— 每行一个短语，'#' 开头为注释，空行忽略。
+# 当用户消息包含任一短语时，detect-feedback-signal hook 提醒主对话派发 feedback-observer。
+# 下面是常见示例，请按你自己的说话习惯增删（越贴合你的真实口头禅，命中越准、误触发越少）。
+
+# —— 中文 ——
+不对
+错了
+不是这个意思
+我说的是
+我说过
+又来了
+别这样
+以后注意
+重新弄
+你理解错了
+
+# —— English ——
+that's not what I meant
+that's wrong
+I already said
+not again
+stop doing that
+you misunderstood
