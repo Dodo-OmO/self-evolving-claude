@@ -103,7 +103,8 @@
 │   ├── hooks/                 6 个确定性卡口（PowerShell，pwsh 跨平台）+ README / 6 deterministic gates (PowerShell)
 │   └── feedback/              反馈库（机制说明 + 归并键表 + 示范条目）/ feedback library (mechanism + merge keys + sample)
 ├── EVOLUTION.md               规则毕业追溯 / rule-graduation trace
-├── scripts/                   check-secrets.ps1（推送前敏感词扫描）+ 模板 / pre-push secret scan + template
+├── scripts/                   check-secrets.ps1（推送前守卫：内容+作者邮箱+悬空对象 三关）+ 模板
+│                              pre-push guard: file content + commit-author email + dangling-object checks
 └── README.md / LICENSE / .gitignore / .gitattributes
 ```
 
