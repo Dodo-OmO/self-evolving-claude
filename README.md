@@ -138,7 +138,7 @@
 
 ## 姊妹项目 · Related
 
-- **[pinpin.custom-claude-feishu-companion](https://github.com/Dodo-OmO/pinpin.custom-claude-feishu-companion)** —— 我用这套工程系统开发、迭代的飞书 AI 伙伴「品品」（技术作品展示）。
+- **[pinpin.claude-feishu.BOTharness](https://github.com/Dodo-OmO/pinpin.claude-feishu.BOTharness)** —— 我用这套工程系统开发、迭代的飞书 AI 伙伴「品品」（技术作品展示）。
   *Pinpin — a Feishu AI companion I build and iterate on with this very engineering system (a technical showcase).*
 
 ## License
