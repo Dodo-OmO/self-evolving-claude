@@ -15,14 +15,18 @@
       { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-evolution.ps1\"" }] }
     ],
     "UserPromptSubmit": [
-      { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect-feedback-signal.ps1\"" }] }
+      { "hooks": [
+        { "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect-feedback-signal.ps1\"" },
+        { "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/delegate-nudge.ps1\"" }
+      ] }
     ],
     "PreToolUse": [
       { "matcher": "Bash", "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-commit-check.ps1\"" }] }
     ],
     "PostToolUse": [
       { "matcher": "Bash|PowerShell", "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect-bug-signal.ps1\"" }] },
-      { "matcher": "Edit|Write|MultiEdit|NotebookEdit", "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/mark-review-needed.ps1\"" }] }
+      { "matcher": "Edit|Write|MultiEdit|NotebookEdit", "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/mark-review-needed.ps1\"" }] },
+      { "matcher": "Read|Task|Agent", "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/delegate-nudge.ps1\"" }] }
     ],
     "Stop": [
       { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-gate.ps1\"" }] }
@@ -41,6 +45,7 @@
 | `mark-review-needed` | PostToolUse(Edit/Write) | 代码改动 → 写 per-session 审查标记（文档/配置跳过） |
 | `stop-gate` | Stop | ① 有未审代码改动 → **硬拦截**强制 code-reviewer；② 否则收尾清单**软提醒** |
 | `pre-commit-check` | PreToolUse(Bash) | `git commit` 前跑 tsc，错误数超 baseline 才拦（baseline 自动维护、只降不升） |
+| `delegate-nudge` | PostToolUse(Read/Task/Agent) + UserPromptSubmit | 主对话自己 Read 文件数超阈值（5/10）→ 软提醒"铺开式调研该派 sub-agent 收摘要"；按 agent 身份区分（sub-agent 的读不计），派 Task / 换轮清零。只提醒不阻断 |
 
 **per-session 隔离**：marker 文件按 `session_id` 命名，多个并行会话互不锁死。
 
