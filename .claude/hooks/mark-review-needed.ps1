@@ -17,15 +17,9 @@ try {
     $filePath = $payload.tool_input.file_path
     if (-not $filePath) { exit 0 }
 
-    # Skip non-code files (docs/config/deps) -- only code changes need review gating.
+    # Skip non-code files (anything under .claude/, docs, config, deps) -- only code changes need review gating.
     $skipPatterns = @(
-        '\.claude[\\/]feedback[\\/]',
-        '\.claude[\\/]hooks[\\/]',
-        '\.claude[\\/]agents[\\/]',
-        '\.claude[\\/]skills[\\/]',
-        '\.claude[\\/]review-needed',
-        '\.claude[\\/]release-marker',
-        'EVOLUTION\.md',
+        '\.claude[\\/]',
         '\.md$',
         '\.json$',
         'node_modules',

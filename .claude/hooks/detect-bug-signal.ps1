@@ -1,6 +1,6 @@
 # detect-bug-signal.ps1
 # PostToolUse hook (matcher: Bash|PowerShell) -- detect build/test failure signals.
-# 命中白名单命令 (npm run build / npm test / npx jest) + 输出含强错误模式 -> 提醒主对话派 bug-fixer-agent.
+# 命中白名单命令 (npm run build / npm run typecheck / npm test / npx jest) + 输出含强错误模式 -> 提醒主对话派 bug-fixer-agent.
 # 不碰 tsc 单独命令 (由 pre-commit-check + tsc-baseline 管, 避免双触发).
 
 $ErrorActionPreference = 'Continue'
@@ -24,7 +24,7 @@ try {
 
     # 命令白名单 (避免任何 PowerShell/Bash 命令都被扫)
     $isBuildOrTest = $false
-    if ($cmd -match 'npm(\.cmd)?\s+run\s+build') { $isBuildOrTest = $true }
+    if ($cmd -match 'npm(\.cmd)?\s+run\s+(build|typecheck)') { $isBuildOrTest = $true }
     elseif ($cmd -match 'npm(\.cmd)?\s+test') { $isBuildOrTest = $true }
     elseif ($cmd -match 'npx\s+jest') { $isBuildOrTest = $true }
     if (-not $isBuildOrTest) { exit 0 }

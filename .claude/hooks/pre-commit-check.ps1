@@ -1,5 +1,7 @@
 # pre-commit-check.ps1
-# PreToolUse hook (matcher: Bash) -- before git commit, run tsc and compare to baseline.
+# PreToolUse hook (matcher: Bash) -- before git commit, run the project's type check and compare to baseline.
+# Uses `npm run typecheck` when package.json defines that script (so a multi-tsconfig project -- root + electron +
+# worker etc. -- gets every tsconfig checked); otherwise falls back to `tsc --noEmit`, which only sees the root tsconfig.
 # Baseline lives in .claude/tsc-baseline.txt (a single integer = known error count).
 # First run: record baseline, do not block.
 # Later runs: block only when new error count > baseline.
@@ -28,9 +30,20 @@ try {
     # If your code lives in a different folder (e.g. monorepo package), set env TSC_CHECK_DIR.
     $codeDir = if ($env:TSC_CHECK_DIR) { $env:TSC_CHECK_DIR } else { $projectDir }
 
+    # Prefer the project's own `typecheck` script (covers every tsconfig); plain tsc only checks the root one.
+    $hasTypecheck = $false
+    try {
+        $pkgFile = Join-Path $codeDir 'package.json'
+        if (Test-Path $pkgFile) {
+            $pkg = Get-Content $pkgFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ($pkg.scripts -and $pkg.scripts.typecheck) { $hasTypecheck = $true }
+        }
+    } catch {}
+
     Push-Location $codeDir
     try {
-        $tscOut = & npx --no-install tsc --noEmit 2>&1 | Out-String
+        if ($hasTypecheck) { $tscOut = & npm run typecheck 2>&1 | Out-String }
+        else { $tscOut = & npx --no-install tsc --noEmit 2>&1 | Out-String }
         $tscExit = $LASTEXITCODE
     } catch {
         $tscOut = $_.Exception.Message
