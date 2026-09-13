@@ -39,7 +39,7 @@
 
 | hook | 事件 | 作用 |
 |---|---|---|
-| `check-evolution` | SessionStart | 开局检查 `.claude/feedback/` 累积，某类目 ≥3 条 → 提示派 evolution-runner |
+| `check-evolution` | SessionStart | 开局检查 `.claude/feedback/` 累积，某类目 ≥3 条 → 提示派 evolution-runner；顺手清掉 7 天前的 per-session 状态文件（review marker 等） |
 | `detect-feedback-signal` | UserPromptSubmit | 用户消息含修正信号（见 feedback-signals.txt）→ 提示派 feedback-observer |
 | `detect-bug-signal` | PostToolUse(Bash) | build/test 输出含失败模式 → 提示派 bug-fixer-agent |
 | `mark-review-needed` | PostToolUse(Edit/Write) | 代码改动 → 写 per-session 审查标记（文档/配置跳过） |

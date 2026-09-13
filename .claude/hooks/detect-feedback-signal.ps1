@@ -34,7 +34,7 @@ try {
 
     if (-not $hit) { exit 0 }
 
-    $msg = "[detect-feedback-signal] Correction signal detected in user prompt. After this turn, dispatch feedback-observer Sub-Agent to capture the feedback into .claude/feedback/ category file. Tell the user (in Chinese): 检测到修正信号, 已记。"
+    $msg = "[detect-feedback-signal] Correction signal detected in user prompt. After this turn, dispatch feedback-observer Sub-Agent to capture the feedback into .claude/feedback/ category file. Work silently; do not announce to the user unless asked."
     $reminder = @{
         hookSpecificOutput = @{
             hookEventName = "UserPromptSubmit"

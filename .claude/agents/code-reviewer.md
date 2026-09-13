@@ -149,19 +149,18 @@ Stage 2 结论：[PASS / FAIL]
 
 > **例外·并行逐块审**：若主对话任务包注明"并行逐块审、勿删 marker"，**跳过下面的删除步骤**，只回报审查结论；marker 由主对话在全部块审过后统一清（并行模式 N 块共用一个 marker，逐块自删会让未审块提前解锁 stop-gate）。
 
-```bash
-# 删除当前 session 的 review-needed marker（按 session 隔离）
-ls -t .claude/review-needed-*.txt 2>/dev/null | head -1 | xargs -r rm
-```
+删除 marker：**优先用主对话任务包里注明的精确文件名**（`.claude/review-needed-<sid>.txt`，主对话派发时应附上）。任务包没给时才退回启发式（最近修改的那个）：
 
-或 PowerShell：
 ```powershell
+# 精确删除（任务包给了文件名时）：
+Remove-Item .claude/review-needed-<sid>.txt -ErrorAction SilentlyContinue
+# 兜底启发式（任务包没给文件名时；用户常开多 session，有误删他人 marker 的小概率）：
 Get-ChildItem .claude/review-needed-*.txt -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | Remove-Item
 ```
 
-解锁本 session 的 stop-gate。回报"审查通过，已解锁 stop"。
+（bash 等价：`rm -f .claude/review-needed-<sid>.txt`；启发式 `ls -t .claude/review-needed-*.txt | head -1 | xargs -r rm`）
 
-**注意**：marker 文件按 session 隔离命名（`.claude/review-needed-<session_id>.txt`），不是统一的 `.claude/review-needed`。"最近修改的"通常就是当前 session 刚 mark 的那个。
+解锁本 session 的 stop-gate。回报"审查通过，已解锁 stop"。
 
 ### 提示主对话 commit 时机
 

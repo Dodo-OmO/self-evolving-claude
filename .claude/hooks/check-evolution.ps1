@@ -12,8 +12,16 @@ try {
     $feedbackDir = Join-Path $projectDir '.claude/feedback'
     if (-not (Test-Path $feedbackDir)) { exit 0 }
 
-    $files = Get-ChildItem $feedbackDir -Filter '*.md' -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne 'FEEDBACK-INDEX.md' -and $_.Name -ne 'README.md' }
+    $files = Get-ChildItem $feedbackDir -Filter '*.md' -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne 'FEEDBACK-INDEX.md' -and $_.Name -ne 'README.md' -and $_.Name -ne '_keys.md' }
     if (-not $files -or $files.Count -eq 0) { exit 0 }
+
+    # housekeeping: purge per-session state files older than 7 days (review markers / delegate-nudge counters)
+    try {
+        $cutoff = (Get-Date).AddDays(-7)
+        Get-ChildItem (Join-Path $projectDir '.claude') -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '^(review-needed-|\.delegate-read-count-)' -and $_.LastWriteTime -lt $cutoff } |
+            Remove-Item -Force -ErrorAction SilentlyContinue
+    } catch {}
 
     $hot = @()
     foreach ($f in $files) {

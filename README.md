@@ -100,7 +100,7 @@
 │   │   ├── bug-fixer          四阶段调试方法论 / four-stage debugging methodology
 │   │   ├── parallel-exec      切块并行执行（准入闸 + 切块契约）/ chunked parallel execution
 │   │   └── project-iteration  迭代主流程（串起所有组件）/ main iteration flow (ties all components together)
-│   ├── hooks/                 6 个确定性卡口（PowerShell，pwsh 跨平台）+ README / 6 deterministic gates (PowerShell)
+│   ├── hooks/                 7 个确定性卡口（PowerShell，pwsh 跨平台）+ README / 7 deterministic gates (PowerShell)
 │   └── feedback/              反馈库（机制说明 + 归并键表 + 示范条目）/ feedback library (mechanism + merge keys + sample)
 ├── EVOLUTION.md               规则毕业追溯 / rule-graduation trace
 ├── scripts/                   check-secrets.ps1（推送前守卫：内容+作者邮箱+悬空对象 三关）+ 模板
